@@ -51,4 +51,14 @@ mean_and_std <- (grepl("activityId" , colNames) |
 # creating subset 
 setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
 
-
+# srep 03 using descriptive activity names to name the activities 
+setWithActivityNames <- merge(setForMeanAndStd, activityLabels,
+                              by='activityId',
+                              all.x=TRUE)
+# srep 4 completed in step one (creatin indivvidual labels)
+# step 05 creating tidy data set 
+secTidySet <- aggregate(. ~subjectId + activityId, setWithActivityNames, mean)
+secTidySet <- secTidySet[order(secTidySet$subjectId, secTidySet$activityId),]
+# writing second tidy data set 
+write.table(secTidySet, "secTidySet.txt", row.name=FALSE
+            
