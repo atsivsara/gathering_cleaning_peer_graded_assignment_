@@ -4,7 +4,7 @@ if(!file.exists("./data")){dir.create("./data")}
 fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(fileUrl,destfile="./data/Dataset.zip")
 unzip(zipfile="./data/Dataset.zip",exdir="./data")
-
+    
 # step 01 merging files 
 
 # read files
@@ -38,5 +38,17 @@ mrg_train <- cbind(y_train, subject_train, x_train)
 mrg_test <- cbind(y_test, subject_test, x_test)
 setAllInOne <- rbind(mrg_train, mrg_test)
 
+# step 02 extracting measurements of mean and std deviation 
+# creating col names
+colNames <- colnames(setAllInOne)
+
+# creating vector for defining id, mean and sd
+mean_and_std <- (grepl("activityId" , colNames) | 
+                     grepl("subjectId" , colNames) | 
+                     grepl("mean.." , colNames) | 
+                     grepl("std.." , colNames) 
+)
+# creating subset 
+setForMeanAndStd <- setAllInOne[ , mean_and_std == TRUE]
 
 
